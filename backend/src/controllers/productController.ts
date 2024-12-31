@@ -13,4 +13,14 @@ export class ProductController {
       console.log(error);
     } 
   }
+
+  static getAllProducts = async(req: Request, res: Response) => {
+    
+    try {
+      const product = await ProductModel.find();
+      res.status(201).json(product);
+    } catch (error) { 
+      console.log(error);
+    } 
+  }
 }
