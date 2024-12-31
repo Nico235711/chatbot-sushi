@@ -1,14 +1,15 @@
-import moongoose, { Schema, Document, Types } from 'mongoose'
+import moongoose, { Schema, Document, Types, PopulatedDoc } from 'mongoose'
+import { Product } from './Product.model';
 
 export interface Order extends Document {
-  user: string;
-  products: Types.ObjectId;
+  clientName: string;
+  products: PopulatedDoc<Product & Document>[];
   total: number;
   status: string;
 }
 
 const OrderSchema = new Schema<Order>({
-  user: {
+  clientName: {
     type: String,
     required: true
   },
@@ -20,6 +21,7 @@ const OrderSchema = new Schema<Order>({
   ],
   total: {
     type: Number,
+    default: 0,
     required: true
   },
   status: {

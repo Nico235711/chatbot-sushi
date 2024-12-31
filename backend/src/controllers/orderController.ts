@@ -12,4 +12,13 @@ export class OrderController {
       console.log(error);
     }
   }
+
+  static getAllOrders = async (req: Request, res: Response) => {
+    try {
+      const orders = await OrderModel.find();
+      res.json(orders);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
