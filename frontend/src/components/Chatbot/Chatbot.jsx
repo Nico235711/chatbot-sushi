@@ -19,11 +19,12 @@ const ChatBot = () => {
       if (!response.ok) throw new Error('Error al obtener el menú');
       const products = await response.json();
       console.log(products); // array de objetos
-      return products;
-
-      console.log(menuMessage);
       
-      return menuMessage;
+      const menu = products
+        .map((product) => `${product.name} - $${product.price}`)
+        .join('\n');
+      return menu;
+      
     } catch (error) {
       console.error(error);
       return 'Hubo un problema al obtener el menú. Inténtalo más tarde.';
@@ -41,8 +42,7 @@ const ChatBot = () => {
     if (inputValue.toLowerCase() === 'menu') {
       const menu = await fetchMenu();
       console.log(menu);
-      botMessage.text = `Nuestro menú es:`
-      menu.forEach((item) => `${item.name} - $${item.price}`);
+      botMessage.text = `Nuestro menú es: ${menu}`
     } else {
       botMessage.text =
         botResponses[inputValue.toLowerCase()] || botResponses.default;

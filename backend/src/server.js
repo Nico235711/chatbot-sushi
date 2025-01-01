@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import productRoutes from './routes/productRoutes.js';
 import cors from 'cors'
 import { corsConfig } from './config/cors.js';
+import orderRoutes from './routes/orderRoutes.js';
 
 dotenv.config()
 connectDB();
@@ -16,5 +17,6 @@ server.use(express.json())
 server.use(cors(corsConfig))
 
 server.use("/api/products", productRoutes);
+server.use("/api/orders", orderRoutes);
 
 export default server
