@@ -13,6 +13,9 @@ const server = express();
 // lectura en formato json
 server.use(express.json())
 
+// logger de morgan
+server.use(morgan('dev'))
+
 // cors
 server.use(cors(corsConfig))
 
