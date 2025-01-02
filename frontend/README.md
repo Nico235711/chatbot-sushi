@@ -6,7 +6,7 @@ Este directorio contiene el código del frontend de mi aplicación. A continuaci
 
 - **Node.js**: Asegúrate de tener instalado Node.js en tu máquina. Puedes descargarlo desde [nodejs.org](https://nodejs.org/).
 - **npm**: Viene incluido con Node.js, lo usare para gestionar las dependencias.
-- **Vite**: Un compilador de código JavaScript y un servidor de desarrollo. Se instala con `npm install`.
+- **Vite**: Un compilador de código JavaScript y un servidor de desarrollo.
 
 ## Configuración
 
