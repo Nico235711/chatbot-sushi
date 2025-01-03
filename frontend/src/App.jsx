@@ -3,7 +3,8 @@ import io from 'socket.io-client';
 import { formatCurrency } from './utils';
 
 const socket = io(import.meta.env.VITE_BACKEND_URL);
-const PEDIDO = "Quiero hacer un pedido";
+const PEDIDO = "quiero hacer un pedido";
+const ESTAN_ABIERTO = "¿estan abiertos?";
 
 export default function App() {
   const [message, setMessage] = useState('');
@@ -24,9 +25,14 @@ export default function App() {
       setMessages((prevMessages) => [...prevMessages, { type: 'message', text: data }]);
     });
 
+    socket.on('message', (data) => {
+      setMessages((prevMessages) => [...prevMessages, { type: 'message', text: data }]);
+    });
+
     return () => {
       socket.off('products');
       socket.off('order');
+      socket.off('message');
     };
   }, []);
 
@@ -44,13 +50,19 @@ export default function App() {
       // Enviar el mensaje como parte del pedido
       socket.emit('order', message);
       setOrders((prevOrders) => [...prevOrders, { text: message }]);
-    } else if (message === PEDIDO) {
+      setIsOrdering(false);
+    } else if (message.toLowerCase() === PEDIDO) {
       // Activar el modo de pedido
       setIsOrdering(true);
       socket.emit('message', message);
     } else {
       // Enviar mensaje genérico
       socket.emit('message', message);
+    }
+
+    if (message.toLowerCase() === ESTAN_ABIERTO) {
+      // Desactivar el modo de pedido
+      socket.emit('message', ESTAN_ABIERTO);
     }
 
     setMessage('');
@@ -105,18 +117,6 @@ export default function App() {
             ))}
           </ul>
 
-          {/* Mostrar pedidos */}
-          <ul>
-            {orders.length > 0 &&
-              orders.map((item, index) => (
-                <li
-                  key={index}
-                  className="border border-gray-300 rounded-md p-2 mt-2 table bg-green-400 text-white"
-                >
-                  {item.text}
-                </li>
-              ))}
-          </ul>
         </div>
       )}
     </div>
