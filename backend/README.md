@@ -1,4 +1,4 @@
-# Backend
+# Backend [puerto: 4000]
 
 Este directorio contiene el código del backend de mi aplicación. A continuación, se detallan las herramientas necesarias y las instrucciones para levantar el servidor backend.
 
@@ -68,3 +68,69 @@ Esto iniciará el servidor en modo de observación, lo que significa que se rein
 - Asegúrate de que MongoDB esté corriendo antes de iniciar el servidor backend.
 - Para el desarrollo, considera usar herramientas como Postman para probar los endpoints de la API.
 
+## Datos de ejemplo para los productos
+
+```bash
+const products = [
+  {
+    "name": "California Roll",
+    "price": 500,
+    "description": "Arroz, alga nori, aguacate, pepino y surimi."
+  },
+  {
+    "name": "Spicy Tuna Roll",
+    "price": 600,
+    "description": "Atún fresco, arroz, alga nori y salsa picante."
+  },
+  {
+    "name": "Salmon Nigiri",
+    "price": 300,
+    "description": "Loncha de salmón fresco sobre arroz avinagrado."
+  },
+  {
+    "name": "Tuna Nigiri",
+    "price": 350,
+    "description": "Loncha de atún fresco sobre arroz avinagrado."
+  },
+  {
+    "name": "Shrimp Tempura Roll",
+    "price": 700,
+    "description": "Gamba tempura, aguacate, arroz y alga nori."
+  },
+  {
+    "name": "Avocado Roll",
+    "price": 400,
+    "description": "Arroz, alga nori y aguacate fresco."
+  },
+  {
+    "name": "Dragon Roll",
+    "price": 750,
+    "description": "Anguila, aguacate, arroz, alga nori y salsa especial."
+  },
+  {
+    "name": "Rainbow Roll",
+    "price": 800,
+    "description": "Roll California cubierto con salmón, atún y aguacate."
+  },
+  {
+    "name": "Cucumber Roll",
+    "price": 300,
+    "description": "Arroz, alga nori y rodajas de pepino fresco."
+  },
+  {
+    "name": "Eel Nigiri",
+    "price": 400,
+    "description": "Loncha de anguila a la parrilla sobre arroz avinagrado."
+  }
+]
+```
+
+## Ejecución
+
+- Cuando te conectes a la base de datos ya se va a cargar con estos datos
+
+## Mensajes con respuestas
+
+- `¿estan abiertos? -> estamos abiertos`
+- `Quiero 2 hamburguesas y 1 coca-cola -> lo guarda en la BD`
+- `menu -> muestra el menu`

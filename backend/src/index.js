@@ -6,9 +6,12 @@ import dotenv from 'dotenv'
 import { connectDB } from './config/db.js';
 import productRoutes from './routes/productRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
+import { OrderController } from './controllers/orderController.js';
 
 const MENU = "menu";
 const PEDIDO = "pedido";
+const ESTAN_ABIERTO = "¿estan abiertos?";
+const ESTAMOS_ABIERTOS = "Estamos abiertos";
 
 // accedo a mis variables de entorno
 dotenv.config()
@@ -36,16 +39,19 @@ io.on('connection', (socket) => {
   socket.on('message', async (data) => {
 
     try {
-      if (data === MENU) {
+      if (data.toLowerCase() === MENU) {
         // Fetch de productos
         const response = await fetch('http://localhost:4000/api/products');
         const products = await response.json();
-  
+
         // Enviar los productos solo al cliente que envió el mensaje
         socket.emit('products', products); // Evento 'products'        
       }
       if (data.includes(PEDIDO)) {
         socket.emit('order', 'Si claro ¿Digame que desea ordenar?');
+      }
+      if (data.includes(ESTAN_ABIERTO)) {
+        socket.emit('message', ESTAMOS_ABIERTOS);
       }
     } catch (error) {
       console.error('Error al obtener productos:', error);
@@ -53,18 +59,32 @@ io.on('connection', (socket) => {
   });
 
   socket.on('order', async (data) => {
-    // console.log(data);
-    const response = await fetch(`http://localhost:4000/api/orders`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ orderDetails: data }), // Enviar los detalles del pedido
-    });
-    const order = await response.json();
+    try {
+      // Crear un nuevo pedido en la base de datos usando el modelo
+      const newOrder = { products: data };
 
-    socket.emit('orderConfirmation', order); 
-    
+      // Guardar el pedido en la base de datos
+      await fetch("http://localhost:4000/api/orders", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newOrder),
+      })
+      // Emitir una confirmación del pedido al cliente con los datos guardados
+      socket.emit('orderConfirmation', {
+        message: 'Pedido registrado con éxito',
+        order: newOrder,
+      });
+    } catch (error) {
+      console.error('Error al guardar el pedido:', error);
+
+      // Enviar un mensaje de error al cliente
+      socket.emit('orderConfirmation', {
+        message: 'Hubo un error al registrar tu pedido. Inténtalo de nuevo.',
+        error: error.message,
+      });
+    }
   });
 });
 
