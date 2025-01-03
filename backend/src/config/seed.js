@@ -56,6 +56,11 @@ const products = [
 export async function seedDatabase() {
   try {
     // Seed products
+    const existingProducts = await Product.find();
+    if (existingProducts.length > 0) {
+      console.log('Products already seeded.');
+      return;
+    }
 
     await Product.insertMany(products);
     console.log('Products seeded successfully.');

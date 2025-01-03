@@ -42,10 +42,15 @@ io.on('connection', (socket) => {
       if (data.toLowerCase() === MENU) {
         // Fetch de productos
         const response = await fetch('http://localhost:4000/api/products');
-        const products = await response.json();
+        const headers = response.headers.get('Content-length');
+        
+        if (headers > 0) {
+          const products = await response.json();
+          // Enviar los productos solo al cliente que envió el mensaje
+          socket.emit('products', products); // Evento 'products'        
+          
+        }
 
-        // Enviar los productos solo al cliente que envió el mensaje
-        socket.emit('products', products); // Evento 'products'        
       }
       if (data.includes(PEDIDO)) {
         socket.emit('order', 'Si claro ¿Digame que desea ordenar?');
