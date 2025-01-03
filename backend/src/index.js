@@ -56,7 +56,7 @@ io.on('connection', (socket) => {
         socket.emit('order', 'Si claro ¿Digame que desea ordenar?');
       }
       if (data.includes(ESTAN_ABIERTO)) {
-        socket.emit('message', ESTAMOS_ABIERTOS);
+        socket.emit('isOpen', ESTAMOS_ABIERTOS);
       }
     } catch (error) {
       console.error('Error al obtener productos:', error);

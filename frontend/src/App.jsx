@@ -29,10 +29,15 @@ export default function App() {
       setMessages((prevMessages) => [...prevMessages, { type: 'message', text: data }]);
     });
 
+    socket.on('isOpen', (data) => {
+      setMessages((prevMessages) => [...prevMessages, { type: 'message', text: data }]);
+    });
+
     return () => {
       socket.off('products');
       socket.off('order');
       socket.off('message');
+      socket.off('isOpen');
     };
   }, []);
 
@@ -62,7 +67,7 @@ export default function App() {
 
     if (message.toLowerCase() === ESTAN_ABIERTO) {
       // Desactivar el modo de pedido
-      socket.emit('message', ESTAN_ABIERTO);
+      socket.emit('isOpen', ESTAN_ABIERTO);
     }
 
     setMessage('');
